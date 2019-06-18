@@ -19,6 +19,26 @@ const preloadState = new Phaser.Class({
         frameWidth: 37,
         frameHeight: 39
       });
+      this.load.spritesheet("bat", "assets/bat.png",{
+        frameWidth: 14,
+        frameHeight: 14
+      });
+      this.load.spritesheet("ghost", "assets/ghost.png",{
+        frameWidth: 16,
+        frameHeight: 16
+      });
+      this.load.spritesheet("skeleton", "assets/skeleton.png",{
+        frameWidth: 16,
+        frameHeight: 16
+      });
+      this.load.spritesheet("explosion", "assets/explosion.png",{
+        frameWidth: 16,
+        frameHeight: 16
+      });
+      this.load.spritesheet("beam", "assets/items.png",{
+      frameWidth: 16,
+      frameHeight: 16
+      });
     },
 
     create: function() {
