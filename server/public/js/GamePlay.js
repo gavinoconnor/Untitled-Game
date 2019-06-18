@@ -50,13 +50,21 @@ const gamePlayState = new Phaser.Class ({
       });
       this.player.play("fly");
 
+<<<<<<< HEAD
       //////create animation for enemy bat
       this.anims.create({
         key: "bat_anim",
+=======
+      // add bat
+      this.bat = this.add.sprite(game.config.width * 2, game.config.height / 2, "bat");
+      this.anims.create({
+        key: "flap",
+>>>>>>> sounds
         frames: this.anims.generateFrameNumbers("bat"),
         frameRate: 20,
         repeat: -1
       });
+<<<<<<< HEAD
       this.bat.play("bat_anim");
 
       //////create animation for enemy ghost
@@ -93,6 +101,9 @@ const gamePlayState = new Phaser.Class ({
         frameRate: 20,
         repeat: -1
       });
+=======
+      this.bat.play("flap");
+>>>>>>> sounds
 
       // allow key inputs to control the player
       this.cursors = this.input.keyboard.createCursorKeys();
