@@ -10,15 +10,26 @@ const preloadState = new Phaser.Class({
     //preload assets for this state
     preload: function() {
       // load all assets tile sprites
+
+      //load menu screen
+      this.load.image("forest_menu", "assets/forest_menu.png");
+
+      //load first level backgrounds
       this.load.image("bg_1", "assets/bg-1.png");
       this.load.image("bg_2", "assets/bg-2.png");
       this.load.image("ground", "assets/ground.png");
-      // load spritesheet
+      // load player spritesheet
       this.load.spritesheet("player", "assets/bee.png",
       {
         frameWidth: 37,
         frameHeight: 39
       });
+
+      this.load.spritesheet("bat", "assets/bat.png",
+        {
+          frameWidth: 16,
+          frameHeight: 16
+        });
     },
 
     create: function() {
