@@ -36,9 +36,15 @@ const gamePlayState = new Phaser.Class ({
 
       // add player && enemies
       this.player = this.add.sprite(game.config.width * 1.5, game.config.height / 2, "player");
-      this.bat = this.add.sprite(game.config.width * 2, game.config.height / 2, "bat");
-      this.ghost = this.add.sprite(game.config.width * 2, game.config.height / 2, "ghost");
-      this.skeleton = this.add.sprite(game.config.width * 2, game.config.height / 2, "skeleton");
+      this.bat = this.add.sprite(game.config.width, game.config.height/(Phaser.Math.Between(1, 3)), "bat");
+      this.ghost = this.add.sprite(game.config.width * (Phaser.Math.Between(1, 2)), game.config.height / (Phaser.Math.Between(2, 7)), "ghost");
+      this.skeleton = this.add.sprite(game.config.width * (Phaser.Math.Between(1, 3)), game.config.height / (Phaser.Math.Between(3, 7)), "skeleton");
+
+
+      //set interactive
+      // this.bat.setInteractive();
+      this.ghost.setInteractive();
+      this.skeleton.setInteractive();
 
 
       // create an animation for the player
@@ -105,7 +111,39 @@ const gamePlayState = new Phaser.Class ({
       // camera follows the player
       this.myCam.startFollow(this.player);
 
+      //creating spaceKey
+      this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+      //adding physics for colletion
+      this.projectiles = this.add.group()
+      this.physics.add.overlap(this.player, this.enemy, this.hurtPlayer, null, this);
+      this.physics.add.overlap(this.projectiles, this.enemy, this.hitEnemy, null, this);
+
+      //add score property
+      this.score = 0
+
+    //  using bitmap font for score borard
+      // this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE", 15);
+    // format the score
+      // var scoreFormated = this.zeroPad(this.socre, 6);
+      // this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE" + scoreFormated , 15)
+      //
+    },// end of create fucntion
+
+    hurtPlayer(player, enemy) {
+    this.resetShipPos(enemy);
+    player.y = config.height/2;
     },
+
+    hitEnemy(projectile, enemy) {
+    projectile.destroy();
+    this.resetShipPos(enemy);
+    // 2.2 increase score
+    this.score += 15;
+  },
+
+
+
 
     //update objects and variables
     update: function() {
@@ -138,55 +176,63 @@ const gamePlayState = new Phaser.Class ({
       this.bg_2.tilePositionX = this.myCam.scrollX * .6;
       this.ground.tilePositionX = this.myCam.scrollX;
 
+      //have enemy move
+      this.moveEnemie(this.bat, 5);
+      this.moveEnemie(this.ghost, 4);
+      this.moveEnemie(this.skeleton, 1.2);
 
 
-      //
-      this.enemy = this.physics.add.group();
+
+
+      //add enemy
+      this.enemy = this.add.group();
+      // this.enemy.enableBody = true;
+      // this.enemy.physicsBodyType = Phaser.Physics.ARCADE;
       this.enemy.add(this.bat);
       this.enemy.add(this.ghost);
       this.enemy.add(this.skeleton);
 
 
-      // if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-      //       this.shootBeam();
-      //   }
-      if (this.spaceKey.isDown){
-        shootBeam();
-        }
-        for (var i = 0; i < this.projectiles.getChildren().length; i++) {
-          var beam = this.projectiles.getChildren()[i];
-          beam.update();
-        }
-      // }
-    // moveEnemie(enemy, speed) {
-    //     enemy.x += speed;
-    //     if (enemy.x > config.height) {
-    //         this.resetShipPos(enemy);
-    //         }
-    //       }
-}
-});
-function shootBeam() {
 
-    if (game.time.now > bulletTime)
-    {
-        bullet = bullets.getFirstExists(false);
+},// end of update funtion
 
-        if (bullet)
-        {
-            bullet.reset(sprite.x + 6, sprite.y - 8);
-            bullet.body.velocity.y = -300;
-            bulletTime = game.time.now + 250;
-        }
-    }
 
-}
-//  Called if the bullet goes out of the screen
-function resetBeam (beam) {
+moveEnemie(enemy, speed) {
+      enemy.x -= speed;
+      if (bat.x <= config.width) {
+            // this.resetEnemyPos(enemy);
+            new(this.bat)
+            }
+          },// end of move enemy function
 
-  beam.kill();
 
-}
+resetEnemyPos(enemy) {
+  // debugger
+  enemy.y = Phaser.Math.Between(20, 150)
+  var randomX = game.config.width * 2
+  enemy.x = randomX
+
+  // Phaser.game.add('bat')
+},
+
+
+//
+// if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+//         this.shootBeam();
+//     }
+//   if (this.spaceKey.isDown){
+//       shootBeam();
+//       }
+//       for (var i = 0; i < this.projectiles.getChildren().length; i++) {
+//           var beam = this.projectiles.getChildren()[i];
+//           beam.update();
+//         }
+
+}); //end of class
+
+ function newBat() {
+   var bat = new Bat(this)
+ }
 
 
 ourGame.scenes.push(gamePlayState);
